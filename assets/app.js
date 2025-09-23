@@ -97,8 +97,8 @@
     const tech = document.createElement('div'); tech.className = 'mt-3 flex flex-wrap gap-2 text-xs';
     p.tech.forEach(t => {
       const b = document.createElement('span');
-      b.className = 'inline-flex items-center gap-1.5 rounded-full bg-brand-100 text-brand-800 px-2.5 py-1 text-xs';
-      const dot = document.createElement('span'); dot.className = 'h-1.5 w-1.5 rounded-full bg-brand-600';
+      b.className = 'inline-flex items-center gap-1.5 rounded-full bg-brand-100 text-brand-800 px-2.5 py-1 text-xs dark:bg-brand-400/10 dark:text-brand-200';
+      const dot = document.createElement('span'); dot.className = 'h-1.5 w-1.5 rounded-full bg-brand-600 dark:bg-brand-400';
       const label = document.createElement('span'); label.textContent = t;
       b.appendChild(dot); b.appendChild(label);
       tech.appendChild(b);
