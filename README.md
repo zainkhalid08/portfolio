@@ -1,4 +1,17 @@
-# Portfolio (tailwind, static)
+<h1 align="center">Portfolio</h1>
+
+<p align="center">
+  <i>Minimal, zero‑build portfolio powered by Tailwind via CDN. Fast, responsive.</i>
+</p>
+
+<p align="center">
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License" />
+  </a>
+  <a href="https://zainkhalid.org" style="text-decoration: none;">
+    <img src="https://img.shields.io/badge/Live%20Demo-Click%20Here-brightgreen" alt="Live Demo" />
+  </a>
+</p>
 
 Best for portfolios with lots of images. 
 Minimal, zero‑build portfolio powered by Tailwind via CDN. Responsive layout, dark mode, enlarge the project image, clients logos, and a downloadable resume. While using a built template can restrict customizations to unique needs, this portfolio uses Tailwind so you can customize it to fulfill your needs.
