@@ -1,0 +1,13 @@
+{
+  "addons": {
+    "img2txt@zainkhalid.org": {
+      "updates": [
+        {
+          "version": "1.0.0",
+          "update_link": "https://zainkhalid.org/extensions/firefox/img2txt/img2txt-1.0.0.xpi"
+        }
+      ]
+    }
+  }
+}
+
