@@ -191,6 +191,10 @@
       }
     }
 
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
     /* ── Stats ── */
     .stats {
       display: grid;
@@ -338,6 +342,44 @@
       background: #fff;
     }
 
+    /* ── Download button ── */
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      width: 100%;
+      padding: 11px;
+      margin-top: 14px;
+      background: transparent;
+      color: var(--green);
+      border: 1.5px solid var(--green);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, transform 0.1s;
+      letter-spacing: 0.1px;
+    }
+
+    .btn-download:hover {
+      background: var(--green-bg);
+    }
+
+    .btn-download:active {
+      transform: scale(0.99);
+    }
+
+    .btn-download:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-download svg {
+      flex-shrink: 0;
+    }
+
   </style>
 </head>
 
@@ -403,8 +445,18 @@
     <!-- Day rows -->
     <div id="planRows"></div>
 
+    <!-- Download button -->
+    <button class="btn-download" id="downloadBtn" onclick="downloadPlan()">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.5 10.5L3.5 6.5H6V1.5H9V6.5H11.5L7.5 10.5Z" fill="currentColor"/>
+        <path d="M2 12.5H13V13.5H2V12.5Z" fill="currentColor"/>
+      </svg>
+      Download as Image
+    </button>
+
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
     const SURAHS = [
       { number: 1, name: "Al-Fatihah", arabic: "الفاتحة", verses: 7 },
@@ -657,6 +709,194 @@
     document.getElementById('days').addEventListener('keydown', e => {
       if (e.key === 'Enter') generatePlan();
     });
+
+    // ── Build a purpose-designed card element for the image export ──────────
+    function buildImageCard() {
+      const G = '#3d8c5f';
+      const G_BG = '#f0f7f3';
+      const G_DIM = '#e4f2eb';
+      const TEXT = '#111827';
+      const MUTED = '#4b5563';
+      const LIGHT = '#6b7280';
+      const BORDER = '#e5e7eb';
+
+      const days      = document.getElementById('statDays').textContent;
+      const remaining = document.getElementById('statRemaining').textContent;
+      const avg       = document.getElementById('statAvg').textContent;
+      const srcRows   = Array.from(document.querySelectorAll('#planRows .day-row'));
+
+      // Outer card
+      const card = document.createElement('div');
+      card.style.cssText = `
+        width: 580px;
+        background: #ffffff;
+        font-family: Inter, system-ui, sans-serif;
+        color: ${TEXT};
+        padding: 36px 36px 28px;
+        box-sizing: border-box;
+      `;
+
+      // ── Header ────────────────────────────────────────────────────────────
+      const header = document.createElement('div');
+      header.style.cssText = 'text-align:center; margin-bottom:28px;';
+      header.innerHTML = `
+        <div style="font-size:2rem; line-height:1; margin-bottom:10px;">🌙</div>
+        <div style="font-size:1.35rem; font-weight:700; color:${TEXT}; letter-spacing:-0.4px;">Quran Planner</div>
+        <div style="font-size:0.8rem; color:${LIGHT}; margin-top:4px;">Day-by-Day Reading Schedule</div>
+        <div style="width:36px; height:3px; background:${G}; border-radius:2px; margin:14px auto 0;"></div>
+      `;
+      card.appendChild(header);
+
+      // ── Stats ─────────────────────────────────────────────────────────────
+      const statsWrap = document.createElement('div');
+      statsWrap.style.cssText = `
+        display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:24px;
+      `;
+      [
+        { val: days,      lbl: 'Days'          },
+        { val: remaining, lbl: 'Ayahs to Read' },
+        { val: avg,       lbl: 'Per Day'       },
+      ].forEach(({ val, lbl }) => {
+        const s = document.createElement('div');
+        s.style.cssText = `
+          background:${G_BG}; border-radius:10px; padding:14px 10px; text-align:center;
+        `;
+        s.innerHTML = `
+          <div style="font-size:1.5rem; font-weight:700; color:${G}; line-height:1;">${val}</div>
+          <div style="font-size:0.68rem; font-weight:600; color:${MUTED}; margin-top:5px;
+                      text-transform:uppercase; letter-spacing:0.5px;">${lbl}</div>
+        `;
+        statsWrap.appendChild(s);
+      });
+      card.appendChild(statsWrap);
+
+      // ── Table header ──────────────────────────────────────────────────────
+      const tHead = document.createElement('div');
+      tHead.style.cssText = `
+        display:grid; grid-template-columns:110px 1fr auto; gap:8px;
+        padding:0 12px 8px;
+        font-size:0.67rem; font-weight:600; text-transform:uppercase;
+        letter-spacing:0.5px; color:${LIGHT};
+      `;
+      tHead.innerHTML = '<span>Day</span><span>Read until</span><span>Ayah</span>';
+      card.appendChild(tHead);
+
+      // ── Rows ──────────────────────────────────────────────────────────────
+      const rowsWrap = document.createElement('div');
+      srcRows.forEach((src, i) => {
+        const isToday = src.classList.contains('today');
+        const isLast  = src.classList.contains('last-day');
+
+        const dayNum    = src.querySelector('.day-num').textContent;
+        const dayDate   = src.querySelector('.day-date').textContent;
+        const surahName = src.querySelector('.surah-name').textContent;
+        const surahNum  = src.querySelector('.surah-meta span:first-child').textContent;
+        const arabic    = src.querySelector('.surah-arabic').textContent;
+        const ayah      = src.querySelector('.ayah-badge').textContent;
+
+        const rowBg    = isToday ? G_DIM : (i % 2 === 0 ? '#fafafa' : '#ffffff');
+        const badgeBg  = isToday ? '#ffffff' : G_BG;
+        const leftBorder = isToday
+          ? `border-left:3px solid ${G};`
+          : (isLast ? `border-color:${G};` : '');
+
+        const row = document.createElement('div');
+        row.style.cssText = `
+          display:grid; grid-template-columns:110px 1fr auto; gap:8px;
+          align-items:center;
+          background:${rowBg};
+          border:1px solid ${isLast ? G : BORDER};
+          border-radius:8px;
+          padding:10px 12px;
+          margin-bottom:5px;
+          ${leftBorder}
+        `;
+        row.innerHTML = `
+          <div style="line-height:1;">
+            <div style="font-size:0.8rem; font-weight:700; color:${G};">${dayNum}</div>
+            <div style="font-size:0.68rem; color:${MUTED}; margin-top:3px;">${dayDate}</div>
+            ${isToday ? `<span style="display:inline-block; font-size:0.58rem; font-weight:600;
+              background:${G}; color:#fff; border-radius:4px; padding:1px 5px; margin-top:3px;
+              letter-spacing:0.3px; text-transform:uppercase;">Today</span>` : ''}
+          </div>
+          <div style="min-width:0;">
+            <div style="font-size:0.88rem; font-weight:600; color:${TEXT};
+                        white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${surahName}</div>
+            <div style="font-size:0.72rem; color:${MUTED}; margin-top:2px; display:flex; align-items:center; gap:5px;">
+              <span>${surahNum}</span>
+              <span style="font-family:serif; color:${LIGHT};">${arabic}</span>
+            </div>
+          </div>
+          <span style="font-size:0.76rem; font-weight:600; background:${badgeBg};
+                       color:${G}; border-radius:6px; padding:4px 9px; white-space:nowrap;">${ayah}</span>
+        `;
+        rowsWrap.appendChild(row);
+      });
+      card.appendChild(rowsWrap);
+
+      // ── Footer ────────────────────────────────────────────────────────────
+      const footer = document.createElement('div');
+      footer.style.cssText = `
+        margin-top:20px; text-align:center;
+        font-size:0.68rem; color:${LIGHT};
+        border-top:1px solid ${BORDER}; padding-top:14px;
+      `;
+      const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      footer.textContent = `Generated on ${dateStr}`;
+      card.appendChild(footer);
+
+      return card;
+    }
+
+    async function downloadPlan() {
+      const btn = document.getElementById('downloadBtn');
+
+      btn.disabled = true;
+      btn.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"
+             style="animation:spin 0.8s linear infinite">
+          <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"
+                  stroke-dasharray="22" stroke-dashoffset="10"/>
+        </svg>
+        Generating image…`;
+
+      const card = buildImageCard();
+
+      // Mount off-screen so fonts & layout resolve correctly
+      card.style.position = 'fixed';
+      card.style.top = '-9999px';
+      card.style.left = '-9999px';
+      document.body.appendChild(card);
+
+      try {
+        await document.fonts.ready;
+
+        const canvas = await html2canvas(card, {
+          scale: 3,
+          useCORS: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+        });
+
+        const link = document.createElement('a');
+        const days = document.getElementById('statDays').textContent;
+        link.download = `quran-plan-${days}days.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      } catch (err) {
+        console.error('Download failed:', err);
+        alert('Could not generate image. Please try again.');
+      } finally {
+        document.body.removeChild(card);
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.5 10.5L3.5 6.5H6V1.5H9V6.5H11.5L7.5 10.5Z" fill="currentColor"/>
+            <path d="M2 12.5H13V13.5H2V12.5Z" fill="currentColor"/>
+          </svg>
+          Download as Image`;
+      }
+    }
   </script>
 
 </body>
