@@ -5,8 +5,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Quran Planner — Day-by-Day Reading Schedule</title>
-  <meta name="description" content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe. Free online tool." />
-  <meta name="keywords" content="quran planner, quran reading schedule, complete quran, daily quran reading, ramadan quran plan, islamic reading plan, quran in 30 days" />
+  <meta name="description"
+    content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe. Free online tool." />
+  <meta name="keywords"
+    content="quran planner, quran reading schedule, complete quran, daily quran reading, ramadan quran plan, islamic reading plan, quran in 30 days" />
   <meta name="author" content="Quran Planner" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://zainkhalid.org/quran-planner.html" />
@@ -14,7 +16,8 @@
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Quran Planner — Day-by-Day Reading Schedule" />
-  <meta property="og:description" content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe." />
+  <meta property="og:description"
+    content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe." />
   <meta property="og:url" content="https://zainkhalid.org/quran-planner.html" />
   <meta property="og:image" content="https://zainkhalid.org/quran-planner-og.png" />
   <meta property="og:locale" content="en_US" />
@@ -23,7 +26,8 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Quran Planner — Day-by-Day Reading Schedule" />
-  <meta name="twitter:description" content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe." />
+  <meta name="twitter:description"
+    content="Create a personalized Quran reading schedule. Set your daily goal and get a day-by-day plan to complete the Quran in 30 days, 60 days, Ramadan, or any timeframe." />
   <meta name="twitter:image" content="https://zainkhalid.org/quran-planner-og.png" />
 
   <!-- Structured Data -->
@@ -42,6 +46,21 @@
       "priceCurrency": "USD"
     }
   }
+  </script>
+
+  <!-- Theme Initialization (Defaults to system, no FOUC) -->
+  <script>
+    (function () {
+      try {
+        const stored = localStorage.getItem('theme_preference') || 'system';
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (stored === 'dark' || (stored === 'system' && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      } catch (_) { }
+    })();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -66,6 +85,20 @@
       --bg: #f5f5f0;
       --card: #ffffff;
       --radius: 12px;
+      color-scheme: light;
+    }
+
+    html.dark {
+      --green: #48a97c;
+      --green-dark: #3b8e67;
+      --green-bg: rgba(72, 169, 124, 0.12);
+      --green-dim: rgba(72, 169, 124, 0.15);
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --border: #242c3b;
+      --bg: #0b0f17;
+      --card: #131924;
+      color-scheme: dark;
     }
 
     body {
@@ -142,6 +175,77 @@
     .field-hint {
       font-size: 0.75rem;
       color: #9ca3af;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      padding: 6px 13px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .pill:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .pill.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .pill-note {
+      display: none;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      color: var(--green-dark);
+      background: var(--green-dim);
+      border: 1px solid var(--green);
+      border-radius: 9px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+
+    .pill-note svg {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .pill-date-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .pill-date-input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .pill-date-wrap .pill {
+      pointer-events: none;
+      /* clicks pass through to the real input on top */
     }
 
     .input-row {
@@ -231,7 +335,9 @@
     }
 
     @keyframes spin {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     /* ── Stats ── */
@@ -303,10 +409,6 @@
       background: #daeee5;
     }
 
-    /* Last day */
-    .day-row.last-day {
-      border-color: var(--green);
-    }
 
     .day-info {
       line-height: 1;
@@ -419,15 +521,195 @@
       flex-shrink: 0;
     }
 
+    .results-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 11px 16px;
+      background: transparent;
+      color: var(--muted);
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:hover {
+      background: #f3f4f6;
+      color: var(--text);
+      border-color: #d1d5db;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.99);
+    }
+
+    /* ── Top Bar & Theme Switcher ── */
+    .top-bar {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .theme-switch {
+      display: inline-flex;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .theme-btn:hover {
+      color: var(--text);
+    }
+
+    .theme-btn.active {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    /* ── Dark Mode Component Overrides ── */
+    html.dark input[type="number"],
+    html.dark select {
+      background-color: var(--card);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    html.dark input[type="number"]:focus,
+    html.dark select:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(72, 169, 124, 0.2);
+    }
+
+    html.dark select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239ca3af' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    }
+
+    html.dark select option {
+      background-color: var(--card);
+      color: var(--text);
+    }
+
+    html.dark .pill {
+      background: var(--card);
+      border-color: var(--border);
+      color: var(--muted);
+    }
+
+    html.dark .pill:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    html.dark .pill.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    html.dark .btn {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    html.dark .today-pill {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    html.dark .pill-note {
+      color: var(--text);
+      background: var(--green-dim);
+      border-color: rgba(72, 169, 124, 0.4);
+    }
+
+    html.dark .day-row:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    html.dark .day-row.today .ayah-badge {
+      background: var(--card);
+      color: var(--green);
+    }
+
+    html.dark .day-row.today:hover {
+      background: rgba(72, 169, 124, 0.2);
+    }
+
+    html.dark .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--muted);
+    }
   </style>
 </head>
 
 <body>
 
+  <!-- Theme selector (Light / System / Dark) -->
+  <div class="top-bar">
+    <div class="theme-switch" role="group" aria-label="Theme mode">
+      <button type="button" class="theme-btn" data-theme="light" title="Light mode" aria-label="Light mode">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path
+            d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+          </path>
+        </svg>
+      </button>
+      <button type="button" class="theme-btn" data-theme="system" title="System default" aria-label="System default">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <rect width="20" height="14" x="2" y="3" rx="2"></rect>
+          <line x1="8" x2="16" y1="21" y2="21"></line>
+          <line x1="12" x2="12" y1="17" y2="21"></line>
+        </svg>
+      </button>
+      <button type="button" class="theme-btn" data-theme="dark" title="Dark mode" aria-label="Dark mode">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
   <header role="banner">
     <div class="header-icon" aria-hidden="true">🌙</div>
     <h1>Quran Planner</h1>
-    <p>Plan your reading — day by day</p>
+    <p>Set a target — get a plan day by day</p>
   </header>
 
   <!-- Form card -->
@@ -439,6 +721,20 @@
         <span class="field-hint">how many days?</span>
       </div>
       <input type="number" id="days" min="1" max="6236" placeholder="e.g. 30" />
+      <div class="pill-row" id="daysPills">
+        <button type="button" class="pill" data-days="15">15 Days</button>
+        <button type="button" class="pill" data-days="30">1 Month</button>
+        <button type="button" class="pill" data-days="90">3 Months</button>
+        <button type="button" class="pill" data-days="120">4 Months</button>
+        <button type="button" class="pill" data-days="180">6 Months</button>
+        <button type="button" class="pill" data-days="365">1 Year</button>
+        <span class="pill-date-wrap">
+          <button type="button" class="pill" id="pickDatePill">Pick a date</button>
+          <input type="date" id="pickDateInput" class="pill-date-input" />
+        </span>
+        <button type="button" class="pill" id="ramadanPill">Before Ramadan</button>
+      </div>
+      <div class="pill-note" id="ramadanNote"></div>
     </div>
 
     <div class="field">
@@ -483,14 +779,24 @@
     <!-- Day rows -->
     <div id="planRows"></div>
 
-    <!-- Download button -->
-    <button class="btn-download" id="downloadBtn" onclick="downloadPlan()">
-      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.5 10.5L3.5 6.5H6V1.5H9V6.5H11.5L7.5 10.5Z" fill="currentColor"/>
-        <path d="M2 12.5H13V13.5H2V12.5Z" fill="currentColor"/>
-      </svg>
-      Download as Image
-    </button>
+    <!-- Actions -->
+    <div class="results-actions">
+      <button class="btn-download" id="downloadBtn" onclick="downloadPlan()">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.5 10.5L3.5 6.5H6V1.5H9V6.5H11.5L7.5 10.5Z" fill="currentColor" />
+          <path d="M2 12.5H13V13.5H2V12.5Z" fill="currentColor" />
+        </svg>
+        Download as Image
+      </button>
+      <button class="btn-download" id="clearPlanBtn" onclick="clearPlan()" title="Clear this plan and create a new one">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M1.5 7.5C1.5 4.18629 4.18629 1.5 7.5 1.5C10.1255 1.5 12.3486 3.18635 13.1517 5.5M13.5 7.5C13.5 10.8137 10.8137 13.5 7.5 13.5C4.87449 13.5 2.6514 11.8137 1.8483 9.5M13.5 2V5.5H10M1.5 13V9.5H5"
+            stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Reset Plan
+      </button>
+    </div>
 
   </div>
 
@@ -642,7 +948,7 @@
       return n + ayahOffset;
     }
 
-    function generatePlan() {
+    function generatePlan(customStartDate, skipScroll) {
       const days = parseInt(document.getElementById('days').value);
       if (!days || days < 1) { alert('Please enter a valid number of days.'); return; }
 
@@ -663,6 +969,22 @@
         return;
       }
 
+      const planStartDate = customStartDate ? new Date(customStartDate) : new Date();
+      planStartDate.setHours(0, 0, 0, 0);
+
+      // Save plan details to localStorage
+      try {
+        const savedPlanData = {
+          days,
+          startSurahIdx,
+          startAyah,
+          startDate: planStartDate.toISOString()
+        };
+        localStorage.setItem('quran_planner_saved_plan', JSON.stringify(savedPlanData));
+      } catch (err) {
+        console.warn('Unable to save plan to localStorage:', err);
+      }
+
       document.getElementById('statDays').textContent = days;
       document.getElementById('statRemaining').textContent = remaining.toLocaleString();
       document.getElementById('statAvg').textContent = Math.round(remaining / days).toLocaleString();
@@ -670,8 +992,8 @@
       const rows = document.getElementById('planRows');
       rows.innerHTML = '';
 
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
+      const currentDayDate = new Date();
+      currentDayDate.setHours(0, 0, 0, 0);
 
       let surahIdx = startSurahIdx;
       let ayahInSurah = startAyah - 1;
@@ -705,21 +1027,20 @@
         }
         dSurah = Math.min(dSurah, SURAHS.length - 1);
 
-        const d = new Date(today);
-        d.setDate(today.getDate() + day - 1);
+        const d = new Date(planStartDate);
+        d.setDate(planStartDate.getDate() + day - 1);
         const dateStr = d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
 
-        const isToday = day === 1;
-        const isLastDay = day === days;
+        const isCurrentDate = d.getTime() === currentDayDate.getTime();
 
         const row = document.createElement('div');
-        row.className = 'day-row' + (isToday ? ' today' : '') + (isLastDay ? ' last-day' : '');
+        row.className = 'day-row' + (isCurrentDate ? ' today' : '');
 
         row.innerHTML = `
       <div class="day-info">
         <div class="day-num">Day ${day}</div>
         <div class="day-date">${dateStr}</div>
-        ${isToday ? '<span class="today-pill">Today</span>' : ''}
+        ${isCurrentDate ? '<span class="today-pill">Today</span>' : ''}
       </div>
       <div class="surah-info">
         <div class="surah-name">${SURAHS[dSurah].name}</div>
@@ -740,8 +1061,200 @@
       void resultsEl.offsetWidth;
       resultsEl.style.animation = '';
 
-      resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!skipScroll) {
+        resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
+
+    function clearPlan() {
+      try {
+        localStorage.removeItem('quran_planner_saved_plan');
+      } catch (err) {
+        console.warn('Unable to clear localStorage:', err);
+      }
+
+      // Reset days input and all pill selections
+      const daysInput = document.getElementById('days');
+      if (daysInput) daysInput.value = '';
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      const pickDateInput = document.getElementById('pickDateInput');
+      if (pickDateInput) pickDateInput.value = '';
+      clearRamadanNote();
+
+      // Reset starting surah & ayah to initial state
+      const startSurah = document.getElementById('startSurah');
+      if (startSurah) {
+        startSurah.value = 0;
+        updateAyahMax();
+      }
+      const startAyah = document.getElementById('startAyah');
+      if (startAyah) startAyah.value = '';
+
+      const resultsEl = document.getElementById('results');
+      resultsEl.style.display = 'none';
+      document.getElementById('planRows').innerHTML = '';
+      const cardEl = document.querySelector('.card');
+      if (cardEl) {
+        cardEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function loadSavedPlan() {
+      try {
+        const raw = localStorage.getItem('quran_planner_saved_plan');
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        if (!saved || !saved.days || !saved.startDate) return;
+
+        // Restore form inputs
+        document.getElementById('days').value = saved.days;
+        if (typeof saved.startSurahIdx !== 'undefined') {
+          document.getElementById('startSurah').value = saved.startSurahIdx;
+          updateAyahMax();
+        }
+        if (saved.startAyah && saved.startAyah > 1) {
+          document.getElementById('startAyah').value = saved.startAyah;
+        }
+
+        // Highlight matching preset pill if applicable
+        document.querySelectorAll('.pill[data-days]').forEach(p => {
+          p.classList.toggle('active', p.dataset.days === String(saved.days));
+        });
+
+        // Re-generate plan using the original start date (skip automatic jump scroll on initial load)
+        generatePlan(saved.startDate, true);
+      } catch (err) {
+        console.warn('Unable to load saved plan:', err);
+      }
+    }
+
+    // Calculate the next Ramadan 1st using the Umm al-Qura calendar
+    function getNextRamadanStart(from = new Date()) {
+      const fmt = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
+
+      const d = new Date(from);
+      d.setHours(0, 0, 0, 0);
+
+      // Ramadan is month 9 in the Hijri calendar; scan forward day by day
+      // (well under a lunar year, so 400 iterations is a safe ceiling)
+      for (let i = 0; i < 400; i++) {
+        const parts = fmt.formatToParts(d);
+        const month = parseInt(parts.find(p => p.type === 'month').value, 10);
+        const day = parseInt(parts.find(p => p.type === 'day').value, 10);
+        if (month === 9 && day === 1) return new Date(d);
+        d.setDate(d.getDate() + 1);
+      }
+      return null;
+    }
+
+    function clearRamadanNote() {
+      const note = document.getElementById('ramadanNote');
+      note.style.display = 'none';
+      note.innerHTML = '';
+    }
+
+    // Fixed-duration pills (15 days / 1 month / etc.)
+    document.querySelectorAll('.pill[data-days]').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        document.getElementById('days').value = pill.dataset.days;
+        clearRamadanNote();
+      });
+    });
+
+    // Dynamic "Before Ramadan" pill
+    document.getElementById('ramadanPill').addEventListener('click', () => {
+      const ramadanStart = getNextRamadanStart();
+      if (!ramadanStart) {
+        alert("Couldn't calculate Ramadan's start date on this device/browser.");
+        return;
+      }
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const daysUntil = Math.round((ramadanStart - today) / (1000 * 60 * 60 * 24));
+
+      document.getElementById('days').value = daysUntil;
+
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      document.getElementById('ramadanPill').classList.add('active');
+
+      const dateStr = ramadanStart.toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+      });
+      const note = document.getElementById('ramadanNote');
+      note.innerHTML = `
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M7.5 1.5C4.19 1.5 1.5 4.19 1.5 7.5C1.5 10.81 4.19 13.5 7.5 13.5C10.81 13.5 13.5 10.81 13.5 7.5C13.5 4.19 10.81 1.5 7.5 1.5Z" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M7.5 4.75V7.75L9.5 9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <span><strong>Ramadan is expected to begin around ${dateStr}</strong> (${daysUntil} day${daysUntil === 1 ? '' : 's'} from today). Actual start depends on moon sighting and may shift by a day or more.</span>
+      `;
+      note.style.display = 'flex';
+    });
+
+    // Keep pills in sync if user types a matching number manually
+    document.getElementById('days').addEventListener('input', () => {
+      const val = document.getElementById('days').value;
+      document.querySelectorAll('.pill[data-days]').forEach(p => {
+        p.classList.toggle('active', p.dataset.days === val);
+      });
+      document.getElementById('ramadanPill').classList.remove('active');
+      pickDatePill.classList.remove('active');
+      clearRamadanNote();
+    });
+
+    const pickDatePill = document.getElementById('pickDatePill');
+    const pickDateInput = document.getElementById('pickDateInput');
+
+    // Restrict picker to sensible bounds: tomorrow through ~17 years out (Quran max ~6236 days)
+    (function setDateBounds() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      const maxDate = new Date();
+      maxDate.setDate(maxDate.getDate() + 6236);
+
+      const toISO = d => d.toISOString().split('T')[0];
+      pickDateInput.min = toISO(tomorrow);
+      pickDateInput.max = toISO(maxDate);
+    })();
+
+    pickDatePill.addEventListener('click', () => {
+      if (typeof pickDateInput.showPicker === 'function') {
+        pickDateInput.showPicker();
+      } else {
+        pickDateInput.click(); // fallback for browsers without showPicker()
+      }
+    });
+
+    pickDateInput.addEventListener('change', () => {
+      if (!pickDateInput.value) return;
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const picked = new Date(pickDateInput.value + 'T00:00:00');
+      picked.setHours(0, 0, 0, 0);
+
+      const daysUntil = Math.round((picked - today) / (1000 * 60 * 60 * 24));
+
+      if (daysUntil < 1) {
+        alert('Please pick a date in the future.');
+        return;
+      }
+
+      document.getElementById('days').value = daysUntil;
+
+      document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+      pickDatePill.classList.add('active');
+
+      clearRamadanNote();
+    });
 
     // Enter key support
     document.getElementById('days').addEventListener('keydown', e => {
@@ -758,10 +1271,10 @@
       const LIGHT = '#6b7280';
       const BORDER = '#e5e7eb';
 
-      const days      = document.getElementById('statDays').textContent;
+      const days = document.getElementById('statDays').textContent;
       const remaining = document.getElementById('statRemaining').textContent;
-      const avg       = document.getElementById('statAvg').textContent;
-      const srcRows   = Array.from(document.querySelectorAll('#planRows .day-row'));
+      const avg = document.getElementById('statAvg').textContent;
+      const srcRows = Array.from(document.querySelectorAll('#planRows .day-row'));
 
       // Outer card
       const card = document.createElement('div');
@@ -791,9 +1304,9 @@
         display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:24px;
       `;
       [
-        { val: days,      lbl: 'Days'          },
+        { val: days, lbl: 'Days' },
         { val: remaining, lbl: 'Ayahs to Read' },
-        { val: avg,       lbl: 'Per Day'       },
+        { val: avg, lbl: 'Per Day' },
       ].forEach(({ val, lbl }) => {
         const s = document.createElement('div');
         s.style.cssText = `
@@ -823,27 +1336,24 @@
       const rowsWrap = document.createElement('div');
       srcRows.forEach((src, i) => {
         const isToday = src.classList.contains('today');
-        const isLast  = src.classList.contains('last-day');
 
-        const dayNum    = src.querySelector('.day-num').textContent;
-        const dayDate   = src.querySelector('.day-date').textContent;
+        const dayNum = src.querySelector('.day-num').textContent;
+        const dayDate = src.querySelector('.day-date').textContent;
         const surahName = src.querySelector('.surah-name').textContent;
-        const surahNum  = src.querySelector('.surah-meta span:first-child').textContent;
-        const arabic    = src.querySelector('.surah-arabic').textContent;
-        const ayah      = src.querySelector('.ayah-badge').textContent;
+        const surahNum = src.querySelector('.surah-meta span:first-child').textContent;
+        const arabic = src.querySelector('.surah-arabic').textContent;
+        const ayah = src.querySelector('.ayah-badge').textContent;
 
-        const rowBg    = isToday ? G_DIM : (i % 2 === 0 ? '#fafafa' : '#ffffff');
-        const badgeBg  = isToday ? '#ffffff' : G_BG;
-        const leftBorder = isToday
-          ? `border-left:3px solid ${G};`
-          : (isLast ? `border-color:${G};` : '');
+        const rowBg = isToday ? G_DIM : (i % 2 === 0 ? '#fafafa' : '#ffffff');
+        const badgeBg = isToday ? '#ffffff' : G_BG;
+        const leftBorder = isToday ? `border-left:3px solid ${G};` : '';
 
         const row = document.createElement('div');
         row.style.cssText = `
           display:grid; grid-template-columns:110px 1fr auto; gap:8px;
           align-items:center;
           background:${rowBg};
-          border:1px solid ${isLast ? G : BORDER};
+          border:1px solid ${BORDER};
           border-radius:8px;
           padding:10px 12px;
           margin-bottom:5px;
@@ -879,7 +1389,15 @@
         font-size:0.68rem; color:${LIGHT};
         border-top:1px solid ${BORDER}; padding-top:14px;
       `;
-      const dateStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      let genDate = new Date();
+      try {
+        const raw = localStorage.getItem('quran_planner_saved_plan');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.startDate) genDate = new Date(parsed.startDate);
+        }
+      } catch (_) { }
+      const dateStr = genDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
       footer.textContent = `Generated on ${dateStr}`;
       card.appendChild(footer);
 
@@ -935,6 +1453,48 @@
           Download as Image`;
       }
     }
+
+    // ── Theme Management (light, system, dark) ──
+    const themeButtons = document.querySelectorAll('.theme-btn');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+    function applyTheme(preference) {
+      const prefersDark = mediaQuery.matches;
+      const effectiveDark = preference === 'dark' || (preference === 'system' && prefersDark);
+      document.documentElement.classList.toggle('dark', effectiveDark);
+
+      themeButtons.forEach(btn => {
+        const isActive = btn.dataset.theme === preference;
+        btn.classList.toggle('active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+    }
+
+    function setTheme(preference) {
+      try {
+        localStorage.setItem('theme_preference', preference);
+      } catch (_) { }
+      applyTheme(preference);
+    }
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => setTheme(btn.dataset.theme));
+    });
+
+    // React dynamically when system appearance changes and 'system' is active
+    mediaQuery.addEventListener('change', () => {
+      const currentPref = localStorage.getItem('theme_preference') || 'system';
+      if (currentPref === 'system') {
+        applyTheme('system');
+      }
+    });
+
+    // Initialize theme UI state (defaults to 'system')
+    const currentThemePref = localStorage.getItem('theme_preference') || 'system';
+    applyTheme(currentThemePref);
+
+    // Restore any previously generated plan upon page visit
+    loadSavedPlan();
   </script>
 
 </body>
